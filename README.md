@@ -55,7 +55,7 @@ With technical support, CSS wizardry, and debugging from [ChatGPT (OpenAI)](http
 
 ## 📜 License
 
-This project is released under the [MIT License](LICENSE).  
+This project is released under the [MIT License](LICENSE.TXT).  
 Use it freely, remix it creatively, and share it proudly.
 
 ---
