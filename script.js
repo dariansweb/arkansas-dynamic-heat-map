@@ -184,26 +184,4 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   });
-
-  const popup = document.getElementById("popup-editor");
-  const popupInput = document.getElementById("popup-input");
-  const popupSave = document.getElementById("popup-save");
-
-  let activeCounty = null;
-
-  // Add click listener to each county
-  counties.forEach((county) => {
-    const path = svgDoc.getElementById(county);
-    const input = document.querySelector(`input[data-county="${county}"]`);
-    if (path && input) {
-      path.addEventListener("click", (e) => {
-        const rect = mapObject.getBoundingClientRect();
-        popup.style.left = `${e.clientX + rect.left + 10}px`;
-        popup.style.top = `${e.clientY + rect.top + 10}px`;
-        popupInput.value = input.value;
-        popup.classList.remove("hidden");
-        activeCounty = { name: county, input, path };
-      });
-    }
-  });
 });

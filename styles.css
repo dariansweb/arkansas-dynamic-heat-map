@@ -163,3 +163,41 @@ body {
 #sidebar-controls button:hover {
   opacity: 0.95;
 }
+
+@media (max-width: 768px) {
+  #container {
+    flex-direction: column;
+  }
+
+  #sidebar {
+    width: 100%;
+    max-height: 45vh;
+    overflow-y: auto;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
+
+  #sidebar-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #sidebar-controls button {
+    width: 95%;
+    margin: 5px auto;
+  }
+
+  #map-container {
+    flex: 1;
+    height: 55vh;
+    max-height: 55vh;
+    overflow: hidden;
+    padding: 5px;
+  }
+
+  #arkansas-map {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+  }
+}

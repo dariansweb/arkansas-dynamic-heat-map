@@ -10,18 +10,18 @@
     <div id="container">
       <div id="sidebar">
         <h2>County Data Input</h2>
-      
+
         <!-- Sticky Control Section -->
         <div id="sidebar-controls">
           <button id="render-map">Render Map</button>
           <button id="open-pdf-modal">Download as PDF</button>
         </div>
-      
+
         <div id="county-inputs">
           <!-- County input rows here -->
         </div>
       </div>
-      
+
       <div id="map-container">
         <object
           id="arkansas-map"
@@ -31,6 +31,7 @@
       </div>
     </div>
     <div id="tooltip" class="hidden"></div>
+
     <div id="popup-editor" class="hidden">
       <input type="number" id="popup-input" />
       <button id="popup-save">Save</button>
@@ -62,10 +63,6 @@
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <script src="script.js" defer></script>
-    <script src="pdfExport.js" defer></script>
   </body>
 </html>
