@@ -103,35 +103,51 @@ document.addEventListener("DOMContentLoaded", () => {
   // Step 2: Wait for SVG to load before binding logic
   mapObject.addEventListener("load", () => {
     const svgDoc = mapObject.contentDocument;
-    if (!svgDoc) {
-      console.error("Failed to access SVG.");
-      return;
+    if (!svgDoc) return;
+
+    // Color fill function
+    function getHeatColor(value, max) {
+      if (value === 0) return "#e0e0e0";
+      const percent = value / max;
+      const lightness = 90 - percent * 60;
+      return `hsl(0, 100%, ${lightness}%)`;
     }
 
-    // Step 3: Color fill function
-    function getHeatColor(value) {
-      if (value == 0) return "#e0e0e0";
-      if (value <= 25) return "#ffc107";
-      if (value <= 50) return "#ff9800";
-      if (value <= 75) return "#f44336";
-      return "#b71c1c";
-    }
+    // Tooltip setup
+    const tooltip = document.getElementById("tooltip");
 
-    // Step 4: Render button click event
+    // Get all inputs
+    const inputs = document.querySelectorAll("#county-inputs input");
+
+    // Bind tooltip and hover
+    counties.forEach((county) => {
+      const path = svgDoc.getElementById(county);
+      const input = document.querySelector(`input[data-county="${county}"]`);
+      const rect = mapObject.getBoundingClientRect();
+
+      if (path && input) {
+        path.addEventListener("mousemove", (e) => {
+          const value = parseInt(input.value) || 0;
+          tooltip.innerHTML = `<strong>${county} County</strong><br/>Value: ${value}`;
+          tooltip.style.left = `${e.clientX + rect.left + 10}px`;
+          tooltip.style.top = `${e.clientY + rect.top + 10}px`;
+
+          tooltip.classList.remove("hidden");
+        });
+
+        path.addEventListener("mouseleave", () => {
+          tooltip.classList.add("hidden");
+        });
+      }
+    });
+
+    // Render logic
     renderMapButton.addEventListener("click", () => {
-      const inputs = document.querySelectorAll("#county-inputs input");
-
-      // Grab all values
       const values = Array.from(inputs).map(
         (input) => parseInt(input.value) || 0
       );
       const maxValue = Math.max(...values);
-
-      // Safety fallback if all values are 0
       const scaledMax = maxValue === 0 ? 1 : maxValue;
-
-      const svgDoc = mapObject.contentDocument;
-      if (!svgDoc) return;
 
       inputs.forEach((input) => {
         const county = input.getAttribute("data-county");
