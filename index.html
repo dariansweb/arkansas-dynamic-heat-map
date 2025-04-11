@@ -10,11 +10,18 @@
     <div id="container">
       <div id="sidebar">
         <h2>County Data Input</h2>
-        <div id="county-inputs">
-          <!-- County input fields will be populated here by script.js -->
+      
+        <!-- Sticky Control Section -->
+        <div id="sidebar-controls">
+          <button id="render-map">Render Map</button>
+          <button id="open-pdf-modal">Download as PDF</button>
         </div>
-        <button id="render-map">Render Map</button>
+      
+        <div id="county-inputs">
+          <!-- County input rows here -->
+        </div>
       </div>
+      
       <div id="map-container">
         <object
           id="arkansas-map"
@@ -23,11 +30,42 @@
         ></object>
       </div>
     </div>
-    <script src="script.js"></script>
     <div id="tooltip" class="hidden"></div>
     <div id="popup-editor" class="hidden">
       <input type="number" id="popup-input" />
       <button id="popup-save">Save</button>
     </div>
+    <!-- PDF Export Modal -->
+    <div id="pdf-modal" class="hidden">
+      <div id="pdf-modal-content">
+        <h3>Export Heat Map</h3>
+
+        <label for="pdf-title">Title</label>
+        <input type="text" id="pdf-title" placeholder="Enter map title..." />
+
+        <label for="pdf-description">Description</label>
+        <textarea
+          id="pdf-description"
+          placeholder="Enter description..."
+        ></textarea>
+
+        <div
+          style="
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+          "
+        >
+          <button id="generate-pdf">Generate PDF</button>
+          <button id="cancel-pdf">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="script.js" defer></script>
+    <script src="pdfExport.js" defer></script>
   </body>
 </html>
