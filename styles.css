@@ -3,7 +3,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -103,3 +103,33 @@ body {
   display: none;
 }
 
+#popup-editor {
+  position: fixed;
+  background-color: #ffffff;
+  border: 1px solid #aaa;
+  padding: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  z-index: 20;
+  border-radius: 4px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+#popup-editor input {
+  width: 60px;
+  padding: 4px;
+}
+
+#popup-editor button {
+  padding: 4px 8px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+}
+
+#popup-editor button:hover {
+  background-color: #0056b3;
+}

@@ -100,12 +100,11 @@ document.addEventListener("DOMContentLoaded", () => {
     countyInputsContainer.appendChild(div);
   });
 
-  // Step 2: Wait for SVG to load before binding logic
   mapObject.addEventListener("load", () => {
     const svgDoc = mapObject.contentDocument;
     if (!svgDoc) return;
 
-    // Color fill function
+    // === Utility functions ===
     function getHeatColor(value, max) {
       if (value === 0) return "#e0e0e0";
       const percent = value / max;
@@ -113,50 +112,98 @@ document.addEventListener("DOMContentLoaded", () => {
       return `hsl(0, 100%, ${lightness}%)`;
     }
 
-    // Tooltip setup
     const tooltip = document.getElementById("tooltip");
-
-    // Get all inputs
+    const popup = document.getElementById("popup-editor");
+    const popupInput = document.getElementById("popup-input");
+    const popupSave = document.getElementById("popup-save");
     const inputs = document.querySelectorAll("#county-inputs input");
 
-    // Bind tooltip and hover
+    let activeCounty = null;
+
+    // === Setup interactivity for each county ===
     counties.forEach((county) => {
       const path = svgDoc.getElementById(county);
       const input = document.querySelector(`input[data-county="${county}"]`);
+      if (!path || !input) return;
+
       const rect = mapObject.getBoundingClientRect();
 
-      if (path && input) {
-        path.addEventListener("mousemove", (e) => {
-          const value = parseInt(input.value) || 0;
-          tooltip.innerHTML = `<strong>${county} County</strong><br/>Value: ${value}`;
-          tooltip.style.left = `${e.clientX + rect.left + 10}px`;
-          tooltip.style.top = `${e.clientY + rect.top + 10}px`;
+      // Hover for tooltip
+      path.addEventListener("mousemove", (e) => {
+        const value = parseInt(input.value) || 0;
+        tooltip.innerHTML = `<strong>${county} County</strong><br/>Value: ${value}`;
+        tooltip.style.left = `${e.clientX + rect.left + 10}px`;
+        tooltip.style.top = `${e.clientY + rect.top + 10}px`;
+        tooltip.classList.remove("hidden");
+      });
 
-          tooltip.classList.remove("hidden");
-        });
+      path.addEventListener("mouseleave", () => {
+        tooltip.classList.add("hidden");
+      });
 
-        path.addEventListener("mouseleave", () => {
-          tooltip.classList.add("hidden");
-        });
-      }
+      // Click for popup editor
+      path.addEventListener("click", (e) => {
+        popupInput.value = input.value;
+        popup.style.left = `${e.clientX + rect.left + 10}px`;
+        popup.style.top = `${e.clientY + rect.top + 10}px`;
+        popup.classList.remove("hidden");
+        activeCounty = { input, path, county };
+      });
     });
 
-    // Render logic
-    renderMapButton.addEventListener("click", () => {
-      const values = Array.from(inputs).map(
-        (input) => parseInt(input.value) || 0
-      );
-      const maxValue = Math.max(...values);
-      const scaledMax = maxValue === 0 ? 1 : maxValue;
+    // === Save popup edit ===
+    popupSave.addEventListener("click", () => {
+      if (!activeCounty) return;
 
-      inputs.forEach((input) => {
-        const county = input.getAttribute("data-county");
-        const value = parseInt(input.value) || 0;
+      const newValue = parseInt(popupInput.value) || 0;
+      activeCounty.input.value = newValue;
+
+      // Recalculate max
+      const values = Array.from(inputs).map((i) => parseInt(i.value) || 0);
+      const maxValue = Math.max(...values) || 1;
+
+      const color = getHeatColor(newValue, maxValue);
+      activeCounty.path.style.fill = color;
+
+      popup.classList.add("hidden");
+      activeCounty = null;
+    });
+
+    // === Render button logic ===
+    renderMapButton.addEventListener("click", () => {
+      const values = Array.from(inputs).map((i) => parseInt(i.value) || 0);
+      const maxValue = Math.max(...values) || 1;
+
+      counties.forEach((county) => {
+        const input = document.querySelector(`input[data-county="${county}"]`);
         const path = svgDoc.getElementById(county);
-        if (path) {
-          path.style.fill = getHeatColor(value, scaledMax);
+        if (path && input) {
+          const value = parseInt(input.value) || 0;
+          path.style.fill = getHeatColor(value, maxValue);
         }
       });
     });
+  });
+
+  const popup = document.getElementById("popup-editor");
+  const popupInput = document.getElementById("popup-input");
+  const popupSave = document.getElementById("popup-save");
+
+  let activeCounty = null;
+
+  // Add click listener to each county
+  counties.forEach((county) => {
+    const path = svgDoc.getElementById(county);
+    const input = document.querySelector(`input[data-county="${county}"]`);
+    if (path && input) {
+      path.addEventListener("click", (e) => {
+        const rect = mapObject.getBoundingClientRect();
+        popup.style.left = `${e.clientX + rect.left + 10}px`;
+        popup.style.top = `${e.clientY + rect.top + 10}px`;
+        popupInput.value = input.value;
+        popup.classList.remove("hidden");
+        activeCounty = { name: county, input, path };
+      });
+    }
   });
 });

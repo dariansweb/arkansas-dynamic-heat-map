@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arkansas Dynamic Heat Map</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div id="container">
-    <div id="sidebar">
-      <h2>County Data Input</h2>
-      <div id="county-inputs">
-        <!-- County input fields will be populated here by script.js -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arkansas Dynamic Heat Map</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="sidebar">
+        <h2>County Data Input</h2>
+        <div id="county-inputs">
+          <!-- County input fields will be populated here by script.js -->
+        </div>
+        <button id="render-map">Render Map</button>
       </div>
-      <button id="render-map">Render Map</button>
+      <div id="map-container">
+        <object
+          id="arkansas-map"
+          data="COUNTY_BOUNDARY.svg"
+          type="image/svg+xml"
+        ></object>
+      </div>
     </div>
-    <div id="map-container">
-      <object id="arkansas-map" data="COUNTY_BOUNDARY.svg" type="image/svg+xml"></object>
+    <script src="script.js"></script>
+    <div id="tooltip" class="hidden"></div>
+    <div id="popup-editor" class="hidden">
+      <input type="number" id="popup-input" />
+      <button id="popup-save">Save</button>
     </div>
-  </div>
-  <script src="script.js"></script>
-  <div id="tooltip" class="hidden"></div>
-</body>
+  </body>
 </html>
